@@ -76,7 +76,7 @@
                 
                     <a class="menu-item" href="/categories/java">Java</a>
                 
-                    <a class="menu-item" href="/categories/mysql">MySQL</a>
+                    <a class="menu-item" href="/categories/MySQL">MySQL</a>
                 
                     <a class="menu-item" href="/categories/linux">Linux</a>
                 
@@ -103,7 +103,7 @@
                 
                     <a class="menu-item" href="/categories/java">Java</a>
                 
-                    <a class="menu-item" href="/categories/mysql">MySQL</a>
+                    <a class="menu-item" href="/categories/MySQL">MySQL</a>
                 
                     <a class="menu-item" href="/categories/linux">Linux</a>
                 
@@ -130,6 +130,71 @@
             <div class="main">
                 <div class="container">
     
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
     
 
     
@@ -160,7 +225,349 @@
         </header>
 
         <div class="post-content">
-            <p>222222</p>
+            <h2 id="Linux系统"><a href="#Linux系统" class="headerlink" title="Linux系统"></a>Linux系统</h2><h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>用户的登录方式有三种：</p>
+<ul>
+<li>命令行登录</li>
+<li>ssh登录</li>
+<li>图形界面登录<br>最高权限账户为 root，可以操作一切</li>
+</ul>
+<h3 id="关机"><a href="#关机" class="headerlink" title="关机"></a>关机</h3><p>在linux领域内大多用在服务器上，很少遇到关机的操作<br>关机指令为：shutdown</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sync # 将数据由内存同步到硬盘中。不管是重启系统还是关闭系统，首先要运行 sync 命令，把内存中的数据写到磁盘中。</span><br><span class="line"></span><br><span class="line">shutdown # 关机指令，你可以man shutdown 来看一下帮助文档。例如你可以运行如下命令关机：</span><br><span class="line"></span><br><span class="line">shutdown –h 10 # 这个命令告诉大家，计算机将在10分钟后关机</span><br><span class="line"></span><br><span class="line">shutdown –h now # 立马关机</span><br><span class="line"></span><br><span class="line">shutdown –h 20:25 # 系统会在今天20:25关机</span><br><span class="line"></span><br><span class="line">shutdown –h +10 # 十分钟后关机</span><br><span class="line"></span><br><span class="line">shutdown –r now # 系统立马重启</span><br><span class="line"></span><br><span class="line">shutdown –r +10 # 系统十分钟后重启</span><br><span class="line"></span><br><span class="line">reboot # 就是重启，等同于 shutdown –r now</span><br><span class="line"></span><br><span class="line">halt # 关闭系统，等同于shutdown –h now 和 poweroff</span><br></pre></td></tr></table></figure>
+<h3 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h3><ul>
+<li>&#x2F;bin：bin是Binary的缩写, 这个目录存放着最经常使用的命令。</li>
+<li>&#x2F;boot： 这里存放的是启动Linux时使用的一些核心文件，包括一些连接文件以及镜像文件。</li>
+<li>&#x2F;dev ： dev是Device(设备)的缩写, 存放的是Linux的外部设备，在Linux中访问设备的方式和访问文件的方式是相同的。</li>
+<li>&#x2F;etc： 这个目录用来存放所有的系统管理所需要的配置文件和子目录。</li>
+<li>&#x2F;home：用户的主目录，在Linux中，每个用户都有一个自己的目录，一般该目录名是以用户的账号命名的。</li>
+<li>&#x2F;lib：这个目录里存放着系统最基本的动态连接共享库，其作用类似于Windows里的DLL文件。</li>
+<li>&#x2F;lost+found：这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。</li>
+<li>&#x2F;media：linux系统会自动识别一些设备，例如U盘、光驱等等，当识别后，linux会把识别的设备挂载到这个目录下。</li>
+<li>&#x2F;mnt：系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将光驱挂载在&#x2F;mnt&#x2F;上，然后进入该目录就可以查看光驱里的内容了。</li>
+<li>&#x2F;opt：这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。</li>
+<li>&#x2F;proc：这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。</li>
+<li>&#x2F;root：该目录为系统管理员，也称作超级权限者的用户主目录。</li>
+<li>&#x2F;sbin：s就是Super User的意思，这里存放的是系统管理员使用的系统管理程序。</li>
+<li>&#x2F;srv：该目录存放一些服务启动之后需要提取的数据。</li>
+<li>&#x2F;sys：这是linux2.6内核的一个很大的变化。该目录下安装了2.6内核中新出现的一个文件系统 sysfs 。</li>
+<li>&#x2F;tmp：这个目录是用来存放一些临时文件的。</li>
+<li>&#x2F;usr：这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于windows下的program files目录。</li>
+<li>&#x2F;usr&#x2F;bin： 系统用户使用的应用程序。</li>
+<li>&#x2F;usr&#x2F;sbin： 超级用户使用的比较高级的管理程序和系统守护程序。</li>
+<li>&#x2F;usr&#x2F;src： 内核源代码默认的放置目录。</li>
+<li>&#x2F;var：这个目录中存放着在不断扩充着的东西，我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件。</li>
+<li>&#x2F;run：是一个临时文件系统，存储系统启动以来的信息。当系统重启时，这个目录下的文件应该被删掉或清除。</li>
+</ul>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="处理目录的常用命令"><a href="#处理目录的常用命令" class="headerlink" title="处理目录的常用命令"></a>处理目录的常用命令</h3><ul>
+<li>ls: 列出目录</li>
+<li>cd：切换目录</li>
+<li>pwd：显示目前的目录</li>
+<li>mkdir：创建一个新的目录</li>
+<li>rmdir：删除一个空的目录</li>
+<li>cp: 复制文件或目录</li>
+<li>rm: 移除文件或目录</li>
+<li>mv: 移动文件与目录，或修改文件与目录的名称</li>
+</ul>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>相对路径就是文件的当前所在路径 例：..&#x2F;name</p>
+<h3 id="绝对路径"><a href="#绝对路径" class="headerlink" title="绝对路径"></a>绝对路径</h3><p>绝对路径就是文件的全部路径、总路径 例：&#x2F;usr&#x2F;share&#x2F;doc</p>
+<h3 id="ls-列出目录"><a href="#ls-列出目录" class="headerlink" title="ls(列出目录)"></a>ls(列出目录)</h3><ul>
+<li>ls 查看当前路径信息</li>
+<li>ls -a 查看当前路径的全部信息（包括隐藏信息）</li>
+<li>ls -l 查看当前路径下的详细信息</li>
+<li>ls -al 查看当前路径下的全部信息的详细信息（包括隐藏信息）</li>
+<li>pwd 显示当前用户所在的目录</li>
+</ul>
+<h3 id="cd-切换目录"><a href="#cd-切换目录" class="headerlink" title="cd(切换目录)"></a>cd(切换目录)</h3><ul>
+<li>cd[相对路劲或绝对路径]</li>
+<li>cd home  切换到home目录</li>
+<li>cd ..    回到上一级目录</li>
+<li>cd &#x2F;     回到根目录</li>
+<li>cd ~     到root目录</li>
+</ul>
+<h3 id="mkdir-创建新目录"><a href="#mkdir-创建新目录" class="headerlink" title="mkdir(创建新目录)"></a>mkdir(创建新目录)</h3><ul>
+<li>mkdir test   创建一个 test 文件夹</li>
+<li>mkdir -p ：递归的创建一个目录</li>
+</ul>
+<h3 id="rmdir-删除空的目录"><a href="#rmdir-删除空的目录" class="headerlink" title="rmdir(删除空的目录)"></a>rmdir(删除空的目录)</h3><ul>
+<li>rmdir [-p] 目录名称</li>
+<li>-p ：连同上一级『空的』目录也一起删除</li>
+</ul>
+<h3 id="cp-复制文件或目录"><a href="#cp-复制文件或目录" class="headerlink" title="cp(复制文件或目录)"></a>cp(复制文件或目录)</h3><ul>
+<li>cp 要复制的文件 要复制到的位置 例：cp &#x2F;root&#x2F;text.txt &#x2F;home</li>
+<li>-a：相当於 -pdr 的意思，至於 pdr 请参考下列说明；(常用)</li>
+<li>-p：连同文件的属性一起复制过去，而非使用默认属性(备份常用)；</li>
+<li>-d：若来源档为连结档的属性(link file)，则复制连结档属性而非文件本身；</li>
+<li>-r：递归持续复制，用於目录的复制行为；(常用)</li>
+<li>-f：为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次；</li>
+<li>-i：若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)</li>
+<li>-l：进行硬式连结(hard link)的连结档创建，而非复制文件本身。</li>
+<li>-s：复制成为符号连结档 (symbolic link)，亦即『捷径』文件；</li>
+<li>-u：若 destination 比 source 旧才升级 destination ！</li>
+</ul>
+<h3 id="rm-移除目录或文件"><a href="#rm-移除目录或文件" class="headerlink" title="rm(移除目录或文件)"></a>rm(移除目录或文件)</h3><ul>
+<li>rm [-fir] 文件或目录</li>
+<li>rm -f 忽略不存在的文件、不会出现警告、强制删除</li>
+<li>rm - r 递归删除目录</li>
+<li>rm -i 删除询问是否删除</li>
+</ul>
+<h3 id="mv-移动文件与目录"><a href="#mv-移动文件与目录" class="headerlink" title="mv( 移动文件与目录)"></a>mv( 移动文件与目录)</h3><ul>
+<li>mv 要移动&#x2F;重命名的文件 操作后的路径&#x2F;名字 移动和重命名</li>
+<li>mv -f 强制性</li>
+<li>mv -u 只替换已经更新过的文件</li>
+<li>-i ：若目标文件 (destination) 已经存在时，就会询问是否覆盖</li>
+</ul>
+<h2 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h2><ul>
+<li>r：read</li>
+<li>w： write</li>
+<li>x ：可执行execute</li>
+<li>-：没有权限</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>文件类型 0</th>
+<th>属主权限 owner 1 2 3</th>
+<th>属组权限 group 4 5 6</th>
+<th>其它用户权限 others 7 8 9</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>d</td>
+<td>r w x</td>
+<td>r - x</td>
+<td>r - x</td>
+</tr>
+<tr>
+<td>目录文件</td>
+<td>读 写 执行</td>
+<td>读 写 执行</td>
+<td>读 写 执行</td>
+</tr>
+</tbody></table>
+<ul>
+<li>1、4、7：读</li>
+<li>2、5、8：写</li>
+<li>3、6、9：可执行</li>
+</ul>
+<p><img src="/../../themes/Chic/source/image/1.png" alt="本地路径"><br>在Linux中第一个字符代表这个文件是目录、文件或链接文件等等</p>
+<ul>
+<li>当为[ d ]则是目录</li>
+<li>当为[ - ]则是文件；</li>
+<li>若是[ l ]则表示为链接文档 ( link file )；</li>
+<li>若是[ b ]则表示为装置文件里面的可供储存的接口设备 ( 可随机存取装置 )；</li>
+<li>若是[ c ]则表示为装置文件里面的串行端口设备，例如键盘、鼠标 ( 一次性读取装置 )</li>
+</ul>
+<h3 id="修改文件属性"><a href="#修改文件属性" class="headerlink" title="修改文件属性"></a>修改文件属性</h3><h4 id="chgrp：更改文件属组"><a href="#chgrp：更改文件属组" class="headerlink" title="chgrp：更改文件属组"></a>chgrp：更改文件属组</h4><ul>
+<li>chgrp [-R] 属组名 文件名</li>
+<li>-R：递归更改文件属组，就是在更改某个目录文件的属组时，如果加上-R的参数，那么该目录下的所有文件的属组都会更改。</li>
+</ul>
+<h4 id="chown：更改文件属主，也可以同时更改文件属组"><a href="#chown：更改文件属主，也可以同时更改文件属组" class="headerlink" title="chown：更改文件属主，也可以同时更改文件属组"></a>chown：更改文件属主，也可以同时更改文件属组</h4><ul>
+<li>chown [–R] 属主名 文件名</li>
+<li>chown [-R] 属主名：属组名 文件名</li>
+</ul>
+<h4 id="chmod：更改文件9个属性"><a href="#chmod：更改文件9个属性" class="headerlink" title="chmod：更改文件9个属性"></a>chmod：更改文件9个属性</h4><p>Linux文件的基本权限就有九个，分别是owner&#x2F;group&#x2F;others三种身份各有自己的read&#x2F;write&#x2F;execute权限。<br>r:4     w:2         x:1</p>
+<ul>
+<li>chmod [-R] 760 文件或目录  760&#x3D;&#x3D;owner-可读可写可执行 group-可读可写 other-不可读不可写不执行</li>
+</ul>
+<h3 id="文件内容查看"><a href="#文件内容查看" class="headerlink" title="文件内容查看"></a>文件内容查看</h3><p>Linux系统中使用以下命令来查看文件的内容</p>
+<ul>
+<li>cat 由第一行开始显示文件内容</li>
+<li>tac 从最后一行开始显示，可以看出 tac 是 cat 的倒着写！</li>
+<li>nl  显示的时候，顺道输出行号！</li>
+<li>more 一页一页的显示文件内容</li>
+<li>less 与 more 类似，但是比 more 更好的是，他可以往前翻页！</li>
+<li>head 只看头几行</li>
+<li>tail 只看尾巴几行</li>
+</ul>
+<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>用户刚刚启动 vi&#x2F;vim，便进入了命令模式。<br>此状态下敲击键盘动作会被Vim识别为命令，而非输入字符。比如我们此时按下i，并不会输入一个字符，i被当作了一个命令。</p>
+<ul>
+<li>i 切换到输入模式，以输入字符。</li>
+<li>x 删除当前光标所在处的字符。</li>
+<li>: 切换到底线命令模式，以在最底一行输入命令。</li>
+</ul>
+<p>若想要编辑文本：启动Vim，进入了命令模式，按下i，切换到输入模式。<br>命令模式只有一些最基本的命令，因此仍要依靠底线命令模式输入更多命令。</p>
+<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><p>在命令模式下按下i就进入了输入模式<br>在输入模式中，可以使用以下按键：</p>
+<ul>
+<li><p>字符按键以及Shift组合，输入字符</p>
+</li>
+<li><p>ENTER，回车键，换行</p>
+</li>
+<li><p>BACK SPACE，退格键，删除光标前一个字符</p>
+</li>
+<li><p>DEL，删除键，删除光标后一个字符</p>
+</li>
+<li><p>方向键，在文本中移动光标</p>
+</li>
+<li><p>HOME&#x2F;END，移动光标到行首&#x2F;行尾</p>
+</li>
+<li><p>Page Up&#x2F;Page Down，上&#x2F;下翻页</p>
+</li>
+<li><p>Insert，切换光标为输入&#x2F;替换模式，光标将变成竖线&#x2F;下划线</p>
+</li>
+<li><p>ESC，退出输入模式，切换到命令模式</p>
+</li>
+</ul>
+<h3 id="底线命令模式"><a href="#底线命令模式" class="headerlink" title="底线命令模式"></a>底线命令模式</h3><p>在命令模式下按下:（英文冒号）就进入了底线命令模式。<br>在底线命令模式中，基本的命令有（已经省略了冒号）：</p>
+<ul>
+<li>q  退出程序</li>
+<li>w  保存程序</li>
+</ul>
+<p>按ESC键可随时退出底线命令模式。</p>
+<h3 id="vim-按键说明"><a href="#vim-按键说明" class="headerlink" title="vim 按键说明"></a>vim 按键说明</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>n&lt; space&gt;</td>
+<td>按下数字后再按空格键，光标会向右移动这一行的 n 个字符</td>
+</tr>
+<tr>
+<td>n&lt; Enter&gt;</td>
+<td>n 为数字。光标向下移动 n 行(常用)</td>
+</tr>
+<tr>
+<td>&#x2F;word</td>
+<td>向光标之下寻找一个名称为 word 的字符串</td>
+</tr>
+<tr>
+<td>n</td>
+<td>这个 n 是英文按键。代表重复前一个搜寻的动作。举例来说， 如果刚刚我们执行 &#x2F;vbird 去向下搜寻 vbird 这个字符串，则按下 n 后，会向下继续搜寻下一个名称为 vbird 的字符串。如果是执行 ?vbird 的话，那么按下 n 则会向上继续搜寻名称为 vbird 的字符串！</td>
+</tr>
+<tr>
+<td>N</td>
+<td>这个 N 是英文按键。与 n 刚好相反，为『反向』进行前一个搜寻动作</td>
+</tr>
+<tr>
+<td>i, I</td>
+<td>进入输入模式(Insert mode)：i 为『从目前光标所在处输入』， I 为『在目前所在行的第一个非空格符处开始输入』</td>
+</tr>
+<tr>
+<td>[Esc]</td>
+<td>退出编辑模式，回到一般模式中(常用)</td>
+</tr>
+<tr>
+<td>:w</td>
+<td>将编辑的数据写入硬盘档案中(常用)</td>
+</tr>
+<tr>
+<td>:q</td>
+<td>离开 vi (常用)</td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>储存后离开，若为 :wq! 则为强制储存后离开 (常用)</td>
+</tr>
+<tr>
+<td>:set nu</td>
+<td>显示行号，设定之后，会在每一行的前缀显示该行的行号</td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td>与 set nu 相反，为取消行号！</td>
+</tr>
+</tbody></table>
+<h2 id="账号管理"><a href="#账号管理" class="headerlink" title="账号管理"></a>账号管理</h2><p>Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统<br>用户账号的管理工作主要涉及到用户账号的添加、修改和删除、本质是对&#x2F;etc&#x2F;passwd文件进行更新</p>
+<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p><b>useradd 选项 用户名</b><br>选项：</p>
+<ul>
+<li><p>-c comment 指定一段注释性描述。</p>
+</li>
+<li><p>-d 目录 指定用户主目录，如果此目录不存在，则同时使用-m选项，可以创建主目录。</p>
+</li>
+<li><p>-g 用户组 指定用户所属的用户组。</p>
+</li>
+<li><p>-G 用户组，用户组 指定用户所属的附加组。</p>
+</li>
+<li><p>-m　使用者目录如不存在则自动建立。</p>
+</li>
+<li><p>-s Shell文件 指定用户的登录Shell。</p>
+</li>
+<li><p>-u 用户号 指定用户的用户号，如果同时有-o选项，则可以重复使用其他用户的标识号</p>
+</li>
+</ul>
+<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><p><b>userdel -r 用户名</b> 删除用户在系统文件中（主要是&#x2F;etc&#x2F;passwd, &#x2F;etc&#x2F;shadow, &#x2F;etc&#x2F;group等）的记录，同时删除用户的主目录</p>
+<h3 id="修改用户"><a href="#修改用户" class="headerlink" title="修改用户"></a>修改用户</h3><p><b>usermod -d 位置 用户名</b> 更改用户</p>
+<h3 id="切换目录"><a href="#切换目录" class="headerlink" title="切换目录"></a>切换目录</h3><p><b>su 用户名</b> 切换到你想要用的用户名<br>exit 或 logout 或 ctrl + d 退回到原来用户<br><b>su - 用户名</b> 使用新用户的工作环境<br># root用户<br>$ 普通用户</p>
+<h3 id="配置密码"><a href="#配置密码" class="headerlink" title="配置密码"></a>配置密码</h3><ul>
+<li>root用户下管理  <b>passwd 用户名</b> 等待依次输入新密码、输入确认密码</li>
+<li>普通用户  <b>passwd </b>等待输入当前密码、然后新密码、输入确认密码</li>
+</ul>
+<h3 id="锁定账户"><a href="#锁定账户" class="headerlink" title="锁定账户"></a>锁定账户</h3><p><b>passwd 选项 用户名</b></p>
+<ul>
+<li><p>-l 锁定口令，即禁用账号。</p>
+</li>
+<li><p>-u 口令解锁。</p>
+</li>
+<li><p>-d 使账号无口令。</p>
+</li>
+<li><p>-f 强迫用户下次登录时修改口令</p>
+</li>
+</ul>
+<h2 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h2><p>每个用户都有一个用户组，系统可以对一个用户组中的所有用户进行集中管理<br>用户组的管理涉及用户组的添加、删除和修改。组的增加、删除和修改本质上是对&#x2F;etc&#x2F;group文件的更新</p>
+<h3 id="用户组创建"><a href="#用户组创建" class="headerlink" title="用户组创建"></a>用户组创建</h3><p><b>groupadd 用户组名</b> 不指定端口号创建用户组<br><b>group -g 端口号 用户组名</b> 指定端口号创建用户组</p>
+<p>如果不指定端口号时那么端口号就是自增、每次自增1</p>
+<h3 id="用户组删除"><a href="#用户组删除" class="headerlink" title="用户组删除"></a>用户组删除</h3><p><b>groupdel 用户组名</b> 删除指定给的用户组</p>
+<h3 id="修改用户组"><a href="#修改用户组" class="headerlink" title="修改用户组"></a>修改用户组</h3><p><b>groupmod -g 端口号 -n 新用户组名字 用户组名字</b> 对用户组进行修改</p>
+<h3 id="切换用户组"><a href="#切换用户组" class="headerlink" title="切换用户组"></a>切换用户组</h3><p><b>$ newgroup root</b></p>
+<h2 id="磁盘管理"><a href="#磁盘管理" class="headerlink" title="磁盘管理"></a>磁盘管理</h2><p><b>df  列出文件系统的整体磁盘使用量</b></p>
+<ul>
+<li><p>-a ：列出所有的文件系统，包括系统特有的 &#x2F;proc 等文件系统；</p>
+</li>
+<li><p>-k ：以 KBytes 的容量显示各文件系统；</p>
+</li>
+<li><p>-m ：以 MBytes 的容量显示各文件系统；</p>
+</li>
+<li><p>-h ：以人们较易阅读的 GBytes, MBytes, KBytes 等格式自行显示；</p>
+</li>
+<li><p>-H ：以 M&#x3D;1000K 取代 M&#x3D;1024K 的进位方式；</p>
+</li>
+<li><p>-T ：显示文件系统类型, 连同该 partition 的 filesystem 名称 (例如 ext3) 也列出；</p>
+</li>
+<li><p>-i ：不用硬盘容量，而以 inode 的数量来显示</p>
+</li>
+</ul>
+<p><b>du  检查磁盘空间使用量</b></p>
+<ul>
+<li><p>-a ：列出所有的文件与目录容量，因为默认仅统计目录底下的文件量而已。</p>
+</li>
+<li><p>-h ：以人们较易读的容量格式 (G&#x2F;M) 显示；</p>
+</li>
+<li><p>-s ：列出总量而已，而不列出每个各别的目录占用容量；</p>
+</li>
+<li><p>-S ：不包括子目录下的总计，与 -s 有点差别。</p>
+</li>
+<li><p>-k ：以 KBytes 列出容量显示；</p>
+</li>
+<li><p>-m ：以 MBytes 列出容量显示；</p>
+</li>
+</ul>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><h3 id="ps-查看系统正在进行的进程信息"><a href="#ps-查看系统正在进行的进程信息" class="headerlink" title="ps  查看系统正在进行的进程信息"></a>ps  查看系统正在进行的进程信息</h3><p><b>ps -aux</b></p>
+<ul>
+<li>-a  显示当前终端运行的进程信息</li>
+<li>-u  以用户的信息显示进程</li>
+<li>-x  显示后台运行进程的参数</li>
+<li>ps -ef|grep mysql 查看要查看的进程的父进程信息</li>
+</ul>
+<p>注： | 管道符<br>注： grep 查找文件中复合条件的字符串</p>
+<p><b>pstree -pu</b> 树结构查看</p>
+<ul>
+<li>-p  显示父Id</li>
+<li>-u  显示用户组</li>
+</ul>
+<h3 id="结束进程"><a href="#结束进程" class="headerlink" title="结束进程"></a>结束进程</h3><p>kill -9 进程Id 直接干死进程、相当于windows的结束任务</p>
+<h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><h3 id="JDK安装-rpm版"><a href="#JDK安装-rpm版" class="headerlink" title="JDK安装 (rpm版)"></a>JDK安装 (rpm版)</h3><p>1.rpm下载地址<a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a><br>2.如果有安装openjdk 则卸载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java -version  //查看是否安装jdk</span><br><span class="line">rpm -qa|grep jdk  // 检索 jdk版本</span><br><span class="line">rpm -e --nodeps   //删除</span><br></pre></td></tr></table></figure>
+<p>3.安装jdk</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh rpm包名  //安装jdk rpm</span><br><span class="line"><span class="comment"># 安装完成后配置环境变量 文件：/etc/profile</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8.0_65 </span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/jre/lib:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 让新增的环境变量生效！</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h3 id="Tomcat安装-解压缩安装"><a href="#Tomcat安装-解压缩安装" class="headerlink" title="Tomcat安装(解压缩安装)"></a>Tomcat安装(解压缩安装)</h3><p>1.下载tomcat<br>2.解压文件<br><b>tar -zxvf 压缩文件名</b> 解压文件<br>3.运行<br><b>..&#x2F;startup.sh 启动</b><br><b>..&#x2F;shotdown.sh 关闭</b></p>
+<h3 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld 查看firewall服务状态</span><br><span class="line">service firewalld start 开启 firewalld.service服务</span><br><span class="line">service firewalld restart 重启 firewalld.service服务</span><br><span class="line">service firewalld stop 关闭 firewalld.service服务</span><br><span class="line"></span><br><span class="line">firewall-cmd --list-all 查看全部信息</span><br><span class="line">firewall-cmd --list-ports 只看端口信息</span><br><span class="line"></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent 开端口命令</span><br><span class="line">systemctl restart firewalld.service 重启防火墙</span><br><span class="line"></span><br><span class="line">--zone 作用域</span><br><span class="line">--add-port=80/tcp 添加端口，格式为：端口/通讯协议</span><br><span class="line">--permanent 永久生效，没有此参数重启后失效</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
 
         </div>
 
@@ -178,6 +585,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/linux/"># linux</a>
+                    
+                        
                 </span>
             </div>
             <div>
